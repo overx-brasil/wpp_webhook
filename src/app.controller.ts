@@ -1,4 +1,4 @@
-import { Controller, Post, Body, HttpStatus, Res } from '@nestjs/common';
+import { Controller, Post, Body, Res, HttpStatus } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Response } from 'express';
 
@@ -26,7 +26,7 @@ export class AppController {
     const statusText = statusMessages[status] || 'atualizado';
     const message = `Olá ${customerName}, seu pedido #${orderId} está ${statusText}. Obrigado por comprar conosco!`;
 
-    const isMessageSent = await this.appService.sendWhatsappMessage(customerPhone, message);
+    const isMessageSent = await this.appService.sendWhatsAppMessage(customerPhone, message);
 
     if (isMessageSent) {
       return res.status(HttpStatus.OK).json({ status: 'success' });
