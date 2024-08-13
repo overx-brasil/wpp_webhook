@@ -1,10 +1,10 @@
 import { Controller, Post, Body, Res, HttpStatus } from '@nestjs/common';
-import { AppModule } from './app.service';
+import { AppService } from './app.service';
 import { Response } from 'express';
 
 @Controller()
 export class AppController {
-  constructor(private readonly whatsAppService: AppModule) { }
+  constructor(private readonly whatsAppService: AppService) { }
 
   @Post('webhook')
   async handleWebhook(@Body() data: any, @Res() res: Response): Promise<Response> {

@@ -2,7 +2,7 @@ import { Injectable, OnModuleInit } from '@nestjs/common';
 import * as venom from 'venom-bot';
 
 @Injectable()
-export class AppModule implements OnModuleInit {
+export class AppService implements OnModuleInit {
   private client: venom.Whatsapp | null = null;
 
   async onModuleInit() {
