@@ -1,32 +1,30 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
-import * as venom from 'venom-bot';
+import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { Twilio } from 'twilio';
 
 @Injectable()
-export class AppService implements OnModuleInit {
-  private client: venom.Whatsapp | null = null;
+export class AppService {
+  private twilioClient: Twilio;
 
-  async onModuleInit() {
-    this.client = await venom.create({
-      session: 'session-name',
-      headless: 'new',
-    });
+  constructor(private configService: ConfigService) {
+    this.twilioClient = new Twilio(
+      this.configService.get<string>('TWILIO_ACCOUNT_SID'),
+      this.configService.get<string>('TWILIO_AUTH_TOKEN'),
+    );
   }
 
   async sendWhatsAppMessage(to: string, body: string): Promise<any> {
-    if (!this.client) {
-      console.error('Venom client not initialized');
-      return null;
-    }
-    const formattedNumber = `${to.replace('+', '')}@c.us`;
-
+    const from = this.configService.get<string>('TWILIO_WHATSAPP_NUMBER');
     try {
-      const result = await this.client.sendText(formattedNumber, body);
-      console.log('Message sent successfully:', result);
-      return result;
+      const message = await this.twilioClient.messages.create({
+        body,
+        from: `whatsapp:${from}`,
+        to: `whatsapp:${to}`,
+      });
+      return message;
     } catch (error) {
       console.error('Failed to send WhatsApp message:', error);
       throw error;
     }
   }
-
 }
