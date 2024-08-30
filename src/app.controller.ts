@@ -25,7 +25,8 @@ export class AppController {
     const customerName = customer.lastname
       ? `${customer.name} ${customer.lastname}`
       : customer.name;
-    const customerPhone = customer.cellphone;
+
+    const customerPhone = this.appService.formatPhoneNumber(customer.cellphone);
 
     const statusMessages = {
       0: 'recebido',
@@ -37,12 +38,11 @@ export class AppController {
     };
 
     const statusText = statusMessages[status] || 'atualizado';
-    const message = `Olá ${customerName}, seu pedido #${id} está ${statusText}. Obrigado por comprar conosco!`;
 
     try {
       const twilioResponse = await this.appService.sendWhatsAppMessage(
         customerPhone,
-        message,
+        `Olá ${customerName}, seu pedido #${id} está ${statusText}. Obrigado por comprar conosco!`,
       );
       console.log('Resposta do Twilio:', twilioResponse);
       return res.status(HttpStatus.OK).json({ status: 'success' });
