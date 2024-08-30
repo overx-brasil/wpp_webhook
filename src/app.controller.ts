@@ -64,6 +64,7 @@ export class AppController {
       'Cliente não retirou o pedido': 'cliente não retirou o pedido',
     };
 
+    console.log('Status recebido:', status);
     const statusText = statusMessages[status] || 'atualizado';
 
     try {
@@ -73,10 +74,8 @@ export class AppController {
         id.toString(),
         statusText,
       );
-      console.log('Resposta do Twilio com template:', twilioResponse);
       return res.status(HttpStatus.OK).json({ status: 'success' });
     } catch (error) {
-      console.error('Erro ao processar webhook:', error);
       return res
         .status(HttpStatus.INTERNAL_SERVER_ERROR)
         .json({ status: 'error', message: error.message });
