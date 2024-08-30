@@ -42,13 +42,8 @@ export class AppService {
           3: statusText,
         }),
       });
-      console.log('Mensagem de template enviada com sucesso:', message);
       return message;
     } catch (error) {
-      console.error(
-        'Falha ao enviar mensagem de template pelo WhatsApp:',
-        error,
-      );
       throw error;
     }
   }
