@@ -35,7 +35,12 @@ export class AppService {
       const message = await this.twilioClient.messages.create({
         from: `whatsapp:${this.configService.get<string>('TWILIO_WHATSAPP_NUMBER')}`,
         to: `whatsapp:${formattedPhone}`,
-        body: `Olá ${customerName}, seu pedido #${orderId} está ${statusText}. Obrigado por comprar conosco!`,
+        contentSid: 'HXd732b1344f83ffd22a4ab4f73acbb7ae',
+        contentVariables: JSON.stringify({
+          1: customerName,
+          2: orderId,
+          3: statusText,
+        }),
       });
       console.log('Mensagem de template enviada com sucesso:', message);
       return message;
