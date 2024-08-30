@@ -15,11 +15,14 @@ export class AppService {
 
   async sendWhatsAppMessage(to: string, body: string): Promise<any> {
     const from = this.configService.get<string>('TWILIO_WHATSAPP_NUMBER');
+
+    const correctedPhoneNumber = this.formatPhoneNumber(to);
+
     try {
       const message = await this.twilioClient.messages.create({
         body,
         from: `whatsapp:${from}`,
-        to: `whatsapp:${to}`,
+        to: `whatsapp:${correctedPhoneNumber}`,
       });
       console.log('Mensagem enviada com sucesso:', message);
       return message;
@@ -27,5 +30,15 @@ export class AppService {
       console.error('Falha ao enviar mensagem pelo WhatsApp:', error);
       throw error;
     }
+  }
+
+  private formatPhoneNumber(phone: string): string {
+    if (phone.startsWith('0')) {
+      phone = phone.slice(1);
+    }
+    if (!phone.startsWith('+')) {
+      phone = `+55${phone}`;
+    }
+    return phone;
   }
 }
