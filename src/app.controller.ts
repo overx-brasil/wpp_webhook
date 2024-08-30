@@ -14,19 +14,17 @@ export class AppController {
     console.log('Webhook recebido:', data);
 
     const { id, status, customer } = data;
-    if (
-      !customer ||
-      !customer.name ||
-      !customer.lastname ||
-      !customer.cellphone
-    ) {
+
+    if (!customer || !customer.name || !customer.cellphone) {
       console.error('Dados de cliente incompletos:', data);
       return res
         .status(HttpStatus.BAD_REQUEST)
         .json({ status: 'error', message: 'Dados de cliente incompletos' });
     }
 
-    const customerName = `${customer.name} ${customer.lastname}`;
+    const customerName = customer.lastname
+      ? `${customer.name} ${customer.lastname}`
+      : customer.name;
     const customerPhone = customer.cellphone;
 
     const statusMessages = {
