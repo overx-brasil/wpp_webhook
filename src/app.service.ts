@@ -40,10 +40,9 @@ export class AppService {
     const data = new URLSearchParams();
     data.append('From', `whatsapp:${this.twilioWhatsappNumber}`);
     data.append('To', `whatsapp:${formattedPhone}`);
-    data.append('TemplateSid', 'HXd732b1344f83ffd22a4ab4f73acbb7ae');
     data.append(
       'Body',
-      `Olá ${customerName}, seu pedido #${orderId} está ${statusText}. Obrigado por comprar conosco!`,
+      `{{1}}: ${customerName}, {{2}}: ${orderId}, {{3}}: ${statusText}`,
     );
 
     try {
