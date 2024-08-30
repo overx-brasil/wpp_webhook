@@ -6,15 +6,11 @@ import axios from 'axios';
 export class AppService {
   private readonly twilioAccountSid: string;
   private readonly twilioAuthToken: string;
-  private readonly twilioWhatsappNumber: string;
 
   constructor(private configService: ConfigService) {
     this.twilioAccountSid =
       this.configService.get<string>('TWILIO_ACCOUNT_SID');
     this.twilioAuthToken = this.configService.get<string>('TWILIO_AUTH_TOKEN');
-    this.twilioWhatsappNumber = this.configService.get<string>(
-      'TWILIO_WHATSAPP_NUMBER',
-    );
   }
 
   public formatPhoneNumber(phone: string): string {
@@ -38,12 +34,16 @@ export class AppService {
     const url = `https://api.twilio.com/2010-04-01/Accounts/${this.twilioAccountSid}/Messages.json`;
 
     const data = new URLSearchParams();
-    data.append('From', `whatsapp:${this.twilioWhatsappNumber}`);
+    data.append('From', `whatsapp:+12292315694`);
     data.append('To', `whatsapp:${formattedPhone}`);
     data.append('TemplateSid', 'HXd732b1344f83ffd22a4ab4f73acbb7ae');
     data.append(
       'Body',
-      `Olá ${customerName}, seu pedido #${orderId} está ${statusText}. Obrigado por comprar conosco!`,
+      JSON.stringify({
+        1: customerName,
+        2: orderId,
+        3: statusText,
+      }),
     );
 
     try {
@@ -53,10 +53,7 @@ export class AppService {
           password: this.twilioAuthToken,
         },
       });
-      console.log(
-        'Mensagem enviada com sucesso usando o template:',
-        response.data,
-      );
+      console.log('Mensagem de template enviada com sucesso:', response.data);
       return response.data;
     } catch (error) {
       console.error(
