@@ -40,9 +40,15 @@ export class AppService {
     const data = new URLSearchParams();
     data.append('From', `whatsapp:${this.twilioWhatsappNumber}`);
     data.append('To', `whatsapp:${formattedPhone}`);
+    data.append('TemplateSid', 'HXd732b1344f83ffd22a4ab4f73acbb7ae');
+    data.append('MessagingServiceSid', 'HXd732b1344f83ffd22a4ab4f73acbb7ae');
     data.append(
       'Body',
-      `{{1}}: ${customerName}, {{2}}: ${orderId}, {{3}}: ${statusText}`,
+      JSON.stringify({
+        1: customerName,
+        2: orderId,
+        3: statusText,
+      }),
     );
 
     try {
