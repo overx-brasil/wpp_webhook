@@ -9,9 +9,12 @@ export class AppService {
   private readonly twilioWhatsappNumber: string;
 
   constructor(private configService: ConfigService) {
-    this.twilioAccountSid = this.configService.get<string>('TWILIO_ACCOUNT_SID');
+    this.twilioAccountSid =
+      this.configService.get<string>('TWILIO_ACCOUNT_SID');
     this.twilioAuthToken = this.configService.get<string>('TWILIO_AUTH_TOKEN');
-    this.twilioWhatsappNumber = this.configService.get<string>('TWILIO_WHATSAPP_NUMBER');
+    this.twilioWhatsappNumber = this.configService.get<string>(
+      'TWILIO_WHATSAPP_NUMBER',
+    );
   }
 
   public formatPhoneNumber(phone: string): string {
@@ -24,16 +27,24 @@ export class AppService {
     return phone;
   }
 
-  public async sendWhatsAppMessage(
+  public async sendWhatsAppTemplateMessage(
     to: string,
-    body: string,
+    customerName: string,
+    orderId: string,
+    statusText: string,
   ): Promise<any> {
+    const formattedPhone = this.formatPhoneNumber(to);
+
     const url = `https://api.twilio.com/2010-04-01/Accounts/${this.twilioAccountSid}/Messages.json`;
 
     const data = new URLSearchParams();
     data.append('From', `whatsapp:${this.twilioWhatsappNumber}`);
-    data.append('To', `whatsapp:${to}`);
-    data.append('Body', body);
+    data.append('To', `whatsapp:${formattedPhone}`);
+    data.append('TemplateSid', 'HXd732b1344f83ffd22a4ab4f73acbb7ae');
+    data.append(
+      'Body',
+      `Olá ${customerName}, seu pedido #${orderId} está ${statusText}. Obrigado por comprar conosco!`,
+    );
 
     try {
       const response = await axios.post(url, data, {
@@ -42,10 +53,16 @@ export class AppService {
           password: this.twilioAuthToken,
         },
       });
-      console.log('Mensagem enviada com sucesso:', response.data);
+      console.log(
+        'Mensagem enviada com sucesso usando o template:',
+        response.data,
+      );
       return response.data;
     } catch (error) {
-      console.error('Falha ao enviar mensagem pelo WhatsApp:', error);
+      console.error(
+        'Falha ao enviar mensagem de template pelo WhatsApp:',
+        error,
+      );
       throw error;
     }
   }

@@ -40,11 +40,13 @@ export class AppController {
     const statusText = statusMessages[status] || 'atualizado';
 
     try {
-      const twilioResponse = await this.appService.sendWhatsAppMessage(
+      const twilioResponse = await this.appService.sendWhatsAppTemplateMessage(
         customerPhone,
-        `Olá ${customerName}, seu pedido #${id} está ${statusText}. Obrigado por comprar conosco!`,
+        customerName,
+        id.toString(),
+        statusText,
       );
-      console.log('Resposta do Twilio:', twilioResponse);
+      console.log('Resposta do Twilio com template:', twilioResponse);
       return res.status(HttpStatus.OK).json({ status: 'success' });
     } catch (error) {
       console.error('Erro ao processar webhook:', error);
