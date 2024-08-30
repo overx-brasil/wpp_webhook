@@ -29,12 +29,39 @@ export class AppController {
     const customerPhone = this.appService.formatPhoneNumber(customer.cellphone);
 
     const statusMessages = {
-      0: 'recebido',
-      1: 'em preparação',
-      2: 'pronto para entrega',
-      3: 'a caminho',
-      4: 'entregue',
-      5: 'cancelado',
+      Pendente: 'pendente',
+      'Pedido agendado': 'agendado',
+      'Em Produção': 'em produção',
+      'Aceites pelas empresas': 'aceito pela empresa',
+      'preparação Concluído': 'preparação concluída',
+      'Aceito pelo motorista': 'aceito pelo motorista',
+      'Motorista chegou ao estabelecimento':
+        'motorista chegou ao estabelecimento',
+      'Retirada confirmada pelo Entregador':
+        'retirada confirmada pelo entregador',
+      'Pedido atrasado': 'pedido atrasado',
+      'Entregador Chegando': 'entregador chegando',
+      'Entregador quase chegando ao cliente':
+        'entregador quase chegando ao cliente',
+      'Cliente quase chegando': 'cliente quase chegando',
+      'Cliente chegou': 'cliente chegou',
+      'Procurando um Entregador': 'procurando um entregador',
+      'Motorista a caminho': 'motorista a caminho',
+      'Motorista esperando pedido': 'motorista esperando pedido',
+      'Aceito pela empresa motorista': 'aceito pela empresa motorista',
+      'Driver arrived to customer': 'entregador chegou ao cliente',
+      Concluído: 'concluído',
+      'Concluído por admin.': 'concluído pelo administrador',
+      'Entrega concluída pelo Entregador': 'entrega concluída pelo entregador',
+      'Retirada concluída pelo cliente': 'retirada concluída pelo cliente',
+      Cancelado: 'cancelado',
+      'Rejeitado por admin.': 'rejeitado pelo administrador',
+      'Rejeitado por negócios': 'rejeitado pelo negócio',
+      'Rejeitado por motorista': 'rejeitado pelo motorista',
+      'Pegar Falha por motorista': 'falha ao pegar pelo motorista',
+      'Falha na entrega de motorista': 'falha na entrega pelo motorista',
+      'Cancelada pelo cliente': 'cancelado pelo cliente',
+      'Cliente não retirou o pedido': 'cliente não retirou o pedido',
     };
 
     const statusText = statusMessages[status] || 'atualizado';
