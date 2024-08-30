@@ -21,9 +21,10 @@ export class AppService {
         from: `whatsapp:${from}`,
         to: `whatsapp:${to}`,
       });
+      console.log('Mensagem enviada com sucesso:', message);
       return message;
     } catch (error) {
-      console.error('Failed to send WhatsApp message:', error);
+      console.error('Falha ao enviar mensagem pelo WhatsApp:', error);
       throw error;
     }
   }

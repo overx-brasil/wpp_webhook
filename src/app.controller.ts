@@ -4,11 +4,28 @@ import { Response } from 'express';
 
 @Controller()
 export class AppController {
-  constructor(private readonly twilioService: AppService) { }
+  constructor(private readonly appService: AppService) {}
 
   @Post('webhook')
-  async handleWebhook(@Body() data: any, @Res() res: Response): Promise<Response> {
+  async handleWebhook(
+    @Body() data: any,
+    @Res() res: Response,
+  ): Promise<Response> {
+    console.log('Webhook recebido:', data);
+
     const { id, status, customer } = data;
+    if (
+      !customer ||
+      !customer.name ||
+      !customer.lastname ||
+      !customer.cellphone
+    ) {
+      console.error('Dados de cliente incompletos:', data);
+      return res
+        .status(HttpStatus.BAD_REQUEST)
+        .json({ status: 'error', message: 'Dados de cliente incompletos' });
+    }
+
     const customerName = `${customer.name} ${customer.lastname}`;
     const customerPhone = customer.cellphone;
 
@@ -25,10 +42,17 @@ export class AppController {
     const message = `Olá ${customerName}, seu pedido #${id} está ${statusText}. Obrigado por comprar conosco!`;
 
     try {
-      await this.twilioService.sendWhatsAppMessage(customerPhone, message);
+      const twilioResponse = await this.appService.sendWhatsAppMessage(
+        customerPhone,
+        message,
+      );
+      console.log('Resposta do Twilio:', twilioResponse);
       return res.status(HttpStatus.OK).json({ status: 'success' });
     } catch (error) {
-      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ status: 'error', message: error.message });
+      console.error('Erro ao processar webhook:', error);
+      return res
+        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .json({ status: 'error', message: error.message });
     }
   }
 }
