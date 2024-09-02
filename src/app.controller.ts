@@ -28,7 +28,16 @@ export class AppController {
 
     const customerPhone = this.appService.formatPhoneNumber(customer.cellphone);
 
-    const statusText = `${data['statusName'] || 'atualizado'}`;
+    const statusMessages = {
+      0: 'Pendente',
+      7: 'Aceito pela Empresa',
+      4: 'Preparação Concluída',
+      23: 'Saiu pra Entrega',
+      11: 'Entregue',
+      16: 'Pedido Cancelado',
+    };
+
+    const statusText = statusMessages[status] || 'atualizado';
 
     try {
       const twilioResponse = await this.appService.sendWhatsAppTemplateMessage(
