@@ -31,13 +31,13 @@ export class AppController {
     const statusMessages = {
       0: 'Pendente',
       7: 'Aceito pela Empresa',
-      4: 'Preparação Concluída',
-      23: 'Saiu pra Entrega',
-      11: 'Entregue',
-      16: 'Pedido Cancelado',
+      4: 'Com a preparação concluída',
+      23: 'Em rota de entrega',
+      11: 'Entregue ao cliente',
+      16: 'Cancelado pelo cliente',
     };
 
-    const statusText = statusMessages[status] || 'atualizado';
+    const statusText = statusMessages[status];
 
     try {
       const twilioResponse = await this.appService.sendWhatsAppTemplateMessage(
