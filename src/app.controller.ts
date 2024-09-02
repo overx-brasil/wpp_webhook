@@ -29,12 +29,12 @@ export class AppController {
     const customerPhone = this.appService.formatPhoneNumber(customer.cellphone);
 
     const statusMessages = {
-      0: 'Pendente',
-      7: 'Aceito pela Empresa',
-      4: 'Com a preparação concluída',
-      23: 'Em rota de entrega',
-      11: 'Entregue ao cliente',
-      16: 'Cancelado pelo cliente',
+      0: 'pendente',
+      7: 'aceito pela Empresa',
+      4: 'com a preparação concluída',
+      23: 'em rota de entrega',
+      11: 'entregue ao cliente',
+      16: 'cancelado pelo cliente',
     };
 
     const statusText = statusMessages[status];
