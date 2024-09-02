@@ -28,34 +28,7 @@ export class AppController {
 
     const customerPhone = this.appService.formatPhoneNumber(customer.cellphone);
 
-    const statusMessages = {
-      0: 'Pendente',
-      4: 'Motorista chegou ao estabelecimento',
-      16: 'Aceito pela Empresa',
-      14: 'Aceito pelo motorista',
-      5: 'Retirada confirmada pelo Entregador',
-      10: 'Cliente chegou ao estabelecimento',
-      17: 'Entrega concluída pelo Entregador',
-      21: 'Rejeitado por motorista',
-      9: 'Cliente quase chegando',
-      7: 'Entregador Chegando',
-      3: 'Aceito pelo motorista',
-      8: 'Entregador quase chegando ao cliente',
-      18: 'Retirada concluída pelo cliente',
-      19: 'Rejeitado por admin.',
-      20: 'Rejeitado por negócios',
-      22: 'Falha por motorista',
-      23: 'Falha na entrega do motorista',
-      24: 'Cancelada pelo cliente',
-      25: 'Cliente não retirou o pedido',
-      26: 'Concluído por admin.',
-      1: 'Pedido agendado',
-      11: 'Procurando um Entregador',
-      15: 'Motorista chegou ao cliente',
-      2: 'Preparação Concluída',
-    };
-
-    const statusText = statusMessages[status] || 'atualizado';
+    const statusText = `${data['statusName'] || 'atualizado'}`;
 
     try {
       const twilioResponse = await this.appService.sendWhatsAppTemplateMessage(
