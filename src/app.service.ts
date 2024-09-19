@@ -36,7 +36,7 @@ export class AppService {
       const message = await this.twilioClient.messages.create({
         from: `whatsapp:${this.configService.get<string>('TWILIO_WHATSAPP_NUMBER')}`,
         to: `whatsapp:${formattedPhone}`,
-        contentSid: 'HX4f1f1b2c7533f6211f6e6cf479419f9d',
+        contentSid: 'HX8a8f4809d982e470f23ef71e45637928',
         contentVariables: JSON.stringify({
           1: `*${businessName}*`,
           2: customerName,
