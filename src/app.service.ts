@@ -25,6 +25,7 @@ export class AppService {
 
   public async sendWhatsAppTemplateMessage(
     to: string,
+    businessName: string,
     customerName: string,
     orderId: string,
     statusText: string,
@@ -35,11 +36,12 @@ export class AppService {
       const message = await this.twilioClient.messages.create({
         from: `whatsapp:${this.configService.get<string>('TWILIO_WHATSAPP_NUMBER')}`,
         to: `whatsapp:${formattedPhone}`,
-        contentSid: 'HXd732b1344f83ffd22a4ab4f73acbb7ae',
+        contentSid: 'HX4f1f1b2c7533f6211f6e6cf479419f9d',
         contentVariables: JSON.stringify({
-          1: customerName,
-          2: orderId,
-          3: statusText,
+          1: `*${businessName}*`,
+          2: customerName,
+          3: orderId,
+          4: statusText,
         }),
       });
       return message;
