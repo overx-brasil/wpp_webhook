@@ -13,7 +13,7 @@ export class AppController {
   ): Promise<Response> {
     console.log('Webhook recebido:', data);
 
-    const { id, status, customer, businessName } = data;
+    const { id, status, customer, business } = data;
 
     if (!customer || !customer.name || !customer.cellphone) {
       console.error('Dados de cliente incompletos:', data);
@@ -22,7 +22,7 @@ export class AppController {
         .json({ status: 'error', message: 'Dados de cliente incompletos' });
     }
 
-    if (!businessName) {
+    if (!business || !business.name) {
       console.error('Nome da empresa não fornecido:', data);
       return res
         .status(HttpStatus.BAD_REQUEST)
@@ -69,7 +69,7 @@ export class AppController {
     try {
       const twilioResponse = await this.appService.sendWhatsAppTemplateMessage(
         customerPhone,
-        businessName,
+        business.name, // Nome da empresa extraído corretamente
         customerName,
         id.toString(),
         statusText,
