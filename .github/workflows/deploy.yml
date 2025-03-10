@@ -1,0 +1,31 @@
+name: Deploy com Docker Compose via VPS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      - name: Build das imagens
+        run: docker compose build
+
+      - name: Executar testes
+        run: docker compose run --rm wpp_webhook npm run test -- --passWithNoTests
+
+      - name: Deploy - Atualizar containers na VPS
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.SSH_HOST }}  
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd ~/webhook/wpp_webhook
+            git pull
+            docker compose up -d --build

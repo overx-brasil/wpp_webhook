@@ -14,14 +14,7 @@ RUN apt-get update \
 
 COPY . .
 
-RUN npx prisma generate
-
 RUN npm run build
-
-# Definição das variáveis de ambiente
-ENV TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID}
-ENV TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
-ENV TWILIO_WHATSAPP_NUMBER=${TWILIO_WHATSAPP_NUMBER}
 
 EXPOSE 3004
 

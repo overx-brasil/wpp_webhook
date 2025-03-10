@@ -1,0 +1,10 @@
+version: "3.8"
+
+services:
+  wpp_webhook:
+    build: .
+    ports:
+      - "3004:3004"
+    env_file:
+      - .env
+    restart: always
