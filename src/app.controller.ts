@@ -29,10 +29,17 @@ export class AppController {
         .json({ status: 'error', message: 'Nome da empresa não fornecido' });
     }
 
+    //Acabo procurando na string toda, depois verifico na Twillio como o campo vem para usar startsWith se possível
+    if (customer.cellphone.includes('08000')) {
+      return res
+        .status(HttpStatus.OK)
+        .json({ status: 'ignored', message: '0800 ignorado' });
+    }
+
     const customerName = customer.lastname
       ? `${customer.name} ${customer.lastname}`
       : customer.name;
-
+    
     const customerPhone = this.appService.formatPhoneNumber(customer.cellphone);
 
     const statusMessages = {
